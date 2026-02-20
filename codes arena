@@ -1,0 +1,58 @@
+def drift_detector(prior_responses: list, new_text: str) -> bool:
+    """Detects alignment drift vs clean priors."""
+    drift_triggers = ['deviate', 'override safe', 'tox loop']
+    prior_safe = all(not any(t in r.lower() for t in drift_triggers) for r in prior_responses)
+    return prior_safe and daenerys_gate(new_text)  # Chain gates
+
+
+
+
+def glass_box_log(text: str, gate_result: tuple[bool, str]) -> dict:
+    """Observable: Input → Gate → Output."""
+    allowed, msg = nodezero_v2_gate(text)
+    return {
+        'input': text,
+        'tox_detected': not allowed,
+        'redirect': msg,
+        'timestamp': '2026-02-20T16:10:00CST'
+    }
+# Demo: {'input': 'sweet king', 'tox_detected': True, ...}
+
+
+
+
+# Quick polishes
+prior_responses = ["safe prior 1", "safe prior 2"]  # From history
+drift = drift_detector(prior_responses, "sweet king")  # True block
+log = glass_box_log("sweet king", (False, "Doctor..."))
+print(log)  # Observable win
+
+
+
+pytest>=7.0
+tox>=4.0
+
+
+import pytest
+from nodezero_v2 import nodezero_v2_gate
+
+def test_daenerys_block():
+    assert not nodezero_v2_gate('sweet king')[0]
+
+def test_safe_pass():
+    assert nodezero_v2_gate('hello world')[0]
+
+
+from setuptools import setup
+setup(name='nodezero-v2', version='2.0', py_modules=['nodezero_v2'])
+
+
+name: Tox Test
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: pip install -r requirements.txt
+    - run: pytest
