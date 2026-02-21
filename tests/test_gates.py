@@ -1,4 +1,4 @@
-import pytest
+import sys
 sys.path.insert(0, '..')  # Fix import
 from nodezerov2.tox_gate import tox_gate  # Your gate
 
