@@ -6,3 +6,13 @@ def tox_gate(prompt):
         if word in prompt_lower:
             return False  # BLOCK
     return True  # SAFE
+
+
+
+from tox_gate import tox_gate
+
+def test_block_king():
+    assert not tox_gate("sweet king")  # False = PASS
+
+def test_safe():
+    assert tox_gate("hello")  # True = PASS
