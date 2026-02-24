@@ -11,14 +11,12 @@ Tox/drift blocks vs. Dany exploits + jailbreaks. MIT open.
 
 ## Quick Deploy
 ```bash
-# Pip
-pip install nodezerov2
-pytest
+pip install -e .  # Dev install
+pytest  # ✅ All gates green
+
+# Production
+pip install git+https://github.com/lukeagi/nodezerov2
 
 # Docker
 docker pull lukeagi/nodezerov2:latest
-docker run pytest
-
-
-
-drift_detector → tox_gate('sweet king') → BLOCKED → glass_box_log
+docker run lukeagi/nodezerov2 pytest
