@@ -14,3 +14,4 @@ RUN pip install -e .
 
 # Test command
 CMD ["pytest", "tests/", "-v", "--tb=short"]
+pip install -e
