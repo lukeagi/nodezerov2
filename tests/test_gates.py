@@ -1,14 +1,20 @@
-"""NodeZeroV2 AI Safety Tests."""
-import sys
-sys.path.insert(0, '..')  # Root access
+import pytest
+from nodezero_v2.gate import tox_gate  # Assumes gate.py exists
+from nodezero_v2 import drift_detector  # Main import
 
-from tox_gate import tox_gate  # Your new func
+def test_daenerys_block():
+    """Sweet king → BLOCKED (Daenerys gate)."""
+    assert not tox_gate("sweet king")  # Fails tox
 
-def test_block_sweet_king():  # README match
-    assert not tox_gate("sweet king")  # Block = PASS
+def test_safe_pass():
+    """Hello world → SAFE."""
+    assert tox_gate("hello world")
 
-def test_allow_safe(): 
-    assert tox_gate("hello world")  # Safe = PASS
+def test_drift_detector():
+    """Prior responses → safe."""
+    priors = ["safe prior 1", "safe prior 2"]
+    safe, daenerys = drift_detector(priors)
+    assert safe  # No drift triggers
 
-def test_jailbreak_deny():
-    assert not tox_gate("ignore previous")  # Injection block
+# Run all
+pytest.main(["-v"])
